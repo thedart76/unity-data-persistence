@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -55,6 +56,8 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            BestScoreText.text = $"Best Score: {BestScoreManager.Instance.ScoreName} {m_Points}";
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(0);
