@@ -37,6 +37,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        DisplayBestScore();
     }
 
     private void Update()
@@ -56,8 +58,6 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
-            BestScoreText.text = $"Best Score: {BestScoreManager.Instance.ScoreName} {m_Points}";
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(0);
@@ -75,5 +75,27 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        UpdateBestScore();
+    }
+
+    public void DisplayBestScore()
+    {
+        BestScoreManager.Instance.LoadBestScore();
+        BestScoreText.text = $"Best Score: {BestScoreManager.Instance.BestScoreName} {BestScoreManager.Instance.BestScorePoints}";
+    }
+
+    public void UpdateBestScore()
+    {
+        if (m_Points > BestScoreManager.Instance.BestScorePoints)
+        {
+            BestScoreText.text = $"Best Score: {BestScoreManager.Instance.ScoreName} {m_Points}";
+            BestScoreManager.Instance.BestScoreName = BestScoreManager.Instance.ScoreName;
+            BestScoreManager.Instance.BestScorePoints = m_Points;
+            BestScoreManager.Instance.SaveBestScore();
+        }
+        else
+        {
+            BestScoreText.text = $"Best Score: {BestScoreManager.Instance.BestScoreName} {BestScoreManager.Instance.BestScorePoints}";
+        }
     }
 }
